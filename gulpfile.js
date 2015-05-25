@@ -7,7 +7,8 @@ var gulp        = require('gulp'),
 	uglify      = require('gulp-uglify'),
 	concat      = require('gulp-concat'),
 	stylus      = require('gulp-stylus'),
-	imagemin    = require('gulp-imagemin');
+	imagemin    = require('gulp-imagemin'),
+	ghPages     = require('gulp-gh-pages');
 
 // Call Jade for compile Templates
 gulp.task('jade', function(){
@@ -75,5 +76,10 @@ gulp.task('browser-sync', function () {
    });
 });
 
+gulp.task('deploy', ['build'], function() {
+  return gulp.src('./build/**/*').pipe(ghPages());
+});
+
 // Default task
-gulp.task('default', ['js', 'jade', 'notes', 'stylus', 'imagemin', 'videos', 'watch', 'browser-sync']);
+gulp.task('build', ['js', 'jade', 'notes', 'stylus', 'imagemin', 'videos']);
+gulp.task('default', ['build', 'watch', 'browser-sync']);
